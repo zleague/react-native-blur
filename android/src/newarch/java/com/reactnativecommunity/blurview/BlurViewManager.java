@@ -26,7 +26,7 @@ class BlurViewManager extends ViewGroupManager<CustomBlurView>
 
   @Nullable
   @Override
-  protected ViewManagerDelegate<BlurView> getDelegate() {
+  protected ViewManagerDelegate<CustomBlurView> getDelegate() {
     return mDelegate;
   }
 

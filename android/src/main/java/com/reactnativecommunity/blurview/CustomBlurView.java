@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.graphics.drawable.Drawable;
 
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.util.ReactFindViewUtil;
@@ -43,23 +44,28 @@ public class CustomBlurView extends BlurView {
       .requireNonNull(((ThemedReactContext)getContext()).getCurrentActivity())
       .getWindow()
       .getDecorView();
-    ViewGroup rootView = decorView.findViewById(android.R.id.content);
-    View bannerImageView = ReactFindViewUtil.findView(rootView, this.imageId);
 
-    if (bannerImageView == null) {
-      return;
+    ViewGroup rootView = decorView.findViewById(android.R.id.content);
+    Drawable targetBackground = decorView.getBackground();
+
+    if (this.imageId != null) {
+      View bannerImageView = ReactFindViewUtil.findView(rootView, this.imageId);
+      if (bannerImageView != null) {
+        rootView = (ViewGroup) bannerImageView;
+        targetBackground = bannerImageView.getBackground();
+      }
     }
 
     if (Build.VERSION.SDK_INT >= 31) {
       this
-        .setupWith((ViewGroup) bannerImageView, new RenderEffectBlur())
-        .setFrameClearDrawable(bannerImageView.getBackground())
+        .setupWith((ViewGroup) rootView, new RenderEffectBlur())
+        .setFrameClearDrawable(targetBackground)
         .setOverlayColor(0)
         .setBlurRadius(10);
     } else {
       this
-        .setupWith((ViewGroup) bannerImageView, new RenderScriptBlur(getContext()))
-        .setFrameClearDrawable(bannerImageView.getBackground())
+        .setupWith((ViewGroup) rootView, new RenderScriptBlur(getContext()))
+        .setFrameClearDrawable(targetBackground)
         .setOverlayColor(0)
         .setBlurRadius(10);
     }
