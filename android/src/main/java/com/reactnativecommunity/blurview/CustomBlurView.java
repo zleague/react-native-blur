@@ -17,6 +17,8 @@ import eightbitlab.com.blurview.RenderEffectBlur;
 import eightbitlab.com.blurview.RenderScriptBlur;
 
 public class CustomBlurView extends BlurView {
+  private String imageId;
+
   public CustomBlurView(Context context) {
     super(context);
   }
@@ -29,19 +31,21 @@ public class CustomBlurView extends BlurView {
     super(context, attrs, defStyleAttr);
   }
 
+  public void setImageId(String imageId) {
+    this.imageId = imageId;
+  }
+
   @Override
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
-    Log.d("BLUR", "ATTATCH TO WINDOW");
+
     View decorView = Objects
       .requireNonNull(((ThemedReactContext)getContext()).getCurrentActivity())
       .getWindow()
       .getDecorView();
     ViewGroup rootView = decorView.findViewById(android.R.id.content);
-    View bannerImageView = ReactFindViewUtil.findView(rootView, "banner-image");
-    View bannerImageView2 = ReactFindViewUtil.findView(decorView, "banner-image");
-    Log.d("BLUR", "[WINDOW] BANNER VIEW: " + String.valueOf(bannerImageView));
-    Log.d("BLUR", "[WINDOW] BANNER VIEW2: " + String.valueOf(bannerImageView2));
+    View bannerImageView = ReactFindViewUtil.findView(rootView, this.imageId);
+
     if (bannerImageView == null) {
       return;
     }
