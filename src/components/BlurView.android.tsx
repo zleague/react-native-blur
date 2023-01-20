@@ -22,6 +22,7 @@ export type BlurViewProps = ViewProps & {
   overlayColor?: string;
   enabled?: boolean;
   autoUpdate?: boolean;
+  imageId?: string;
 };
 
 const BlurView = forwardRef<View, BlurViewProps>(
@@ -34,6 +35,7 @@ const BlurView = forwardRef<View, BlurViewProps>(
       overlayColor,
       enabled,
       autoUpdate,
+      imageId,
       children,
       style,
       ...rest
@@ -97,6 +99,7 @@ const BlurView = forwardRef<View, BlurViewProps>(
         blurType={blurType}
         enabled={enabled}
         autoUpdate={autoUpdate}
+        imageId={imageId}
         pointerEvents="none"
         style={StyleSheet.compose(styles.transparent, style)}
       >
